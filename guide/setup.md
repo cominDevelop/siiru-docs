@@ -8,11 +8,12 @@ description: SiiRU CMS 설치 환경 안내 및 설치 가이드입니다.
 
 본 시스템은 아래와 같은 환경에서 설치 및 운영 테스트함.
 
-* OS : CentOS 7.0 이상
-* Database : MariaDB 10.2.x / MySQL 8.0.x / Oracle 11G / Tibero 5.x, 6.x
-* JDK : 1.8.0 이상
-* WEB : Apache 2.2.x 이상
-* WAS : Apache Tomcat 8.x, Tmax Jeus 7
+
+| **OS** | CentOS 6.x 이상 |
+| :---: |  :--- |
+| **DB** | MariaDB 10.2.x / MySQL 8.0.x / Oracle 11G / Tibero 5.x, 6.x |
+| **WEB** | Apache 2.2.x |
+| **WAS** | JDK 1.8.x 이상 / Apache Tomcat 8.x, Tmax Jeus 7 |
 
 ## 설치 방법
 
@@ -22,11 +23,15 @@ SiiRU CMS의 소스 파일을 서버에 업로드 및 압축 해제한다.
 
 1. SiiRU CMS 소스를 업로드할 계정을 생성한다.
 
-   `useradd [계정명]`
+   ```bash
+   useradd [계정명]
+   ```
 
 2. SiiRU CMS 소스 파일을 업로드 후 사용자 홈 폴더 아래에 압축을 해제한다.
 
-   `tar zxvf SiiRU_v2.1.tar.gz /home/[계정명]/public_html`
+   ```bash
+   tar zxvf SiiRU_v2.1.tar.gz /home/[계정명]/public_html
+   ```
 
 ### Apache 설정
 
@@ -34,35 +39,41 @@ SiiRU CMS를 운영하기 위한 서버에 Apache가 설치되어 있고, 이를
 
 #### 1. Tomcat Connector 설치
 
-1. Tomcat Connectors JK 최신 버전을 다운로드한다.
+1. Tomcat Connectors JK 최신 버전을 [다운로드](https://tomcat.apache.org/download-connectors.cgi) 한다.
 
-   : [https://tomcat.apache.org/download-connectors.cgi](https://tomcat.apache.org/download-connectors.cgi)
+2. 컴파일 설치를 위한 기본 모듈을 확인한다.
+   ```bash
+   which apxs
+   ```
+3. 컴파일 설치를 위한 패키지를 설치한다.
+   ```bash
+   yum install autoconf libtool
+   ```
+4. 다운로드 받은 파일을 서버에 업로드하고 특정 경로에 해당 파일의 압축을 해제한다.
+   ```bash
+   tar zxvf tomcat-connectors-1.2.48-src.tar.gz [압축 해제할 경로]
+   ```
 
-2. 컴파일 설치를 위한 기본 모듈을 확인하고 설치한다.
+5. 해당 디렉토리 아래 native 폴더로 이동 후 configure를 아래와 같이 진행한다.
 
-   `yum install autoconf libtool`
+   ```bash
+   cd [압축 해제된 경로]/tomcat-connector-1.2.48-src/native
+   ./configure --with-apxs=[2에서 확인한 apxs 모듈 경로]
+   ```
 
-   `which apxs` → apxs 모듈 설치 경로 확인
+6. 설치 파일 생성 및 설치
+   ```bash
+   make && make install
+   ```
 
-3. 다운로드 받은 파일을 서버에 업로드하고 특정 경로에 해당 파일의 압축을 해제한다.
-
-   `tar zxvf tomcat-connectors-1.2.48-src.tar.gz [압축 해제할 경로]`
-
-4. 해당 디렉토리 아래 native 폴더로 이동 후 configure를 아래와 같이 진행한다.
-
-   `cd [압축 해제된 경로]/tomcat-connector-1.2.48-src/native` `./configure --with-apxs=[2에서 확인한 apxs 모듈 경로]`
-
-5. 설치 파일 생성 및 설치
-
-   `make && make install`
-
-6. 설치 확인
-
-   `find / -name 'mod_jk.so'`
+7. 설치 확인
+    ```bash
+    find / -name 'mod_jk.so'
+    ```
 
 #### 2. Apache 환경설정 수정
 
-* Apache 설정 파일 httpd.conf에서 아래 내용을 수정 및 추가한다.
+* Apache 설정 파일 `httpd.conf`에서 아래 내용을 수정 및 추가한다.
 * `vi [Apache 설치 경로]/conf/httpd.conf`
 
   ```bash
@@ -446,7 +457,7 @@ SiiRU CMS가 운영될 Database를 사용 중인 DB 서비스에 생성하고 Si
 
 
 > **작성 : \(주\)가민정보시스템 정보기술연구소 프레임웍연구팀**  
-> TEL : 062-653-2879 \| 직통 : 070-4827-4930
+> TEL : 062-653-2879 (직통 : 070-4827-4930)
 
 #### 📁 Revision History
 
