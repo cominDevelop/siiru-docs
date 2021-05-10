@@ -1,5 +1,5 @@
 ---
-description: (주)가민정보시스템
+description: SiiRU CMS(시루 콘텐츠 관리 시스템)에 대한 기술 페이지입니다.
 ---
 
 # SiiRU CMS v2.1
