@@ -12,7 +12,7 @@
 
 ## 사용 가이드 <a id="guide"></a>
 
-* [설치](guide/setup.md)
+* [setup](guide/setup.md)
 * [운영자 매뉴얼](https://siiru.comin.com/SiiRUCMS.v2.1.pdf)
 
 ## 개발 가이드 <a id="develop"></a>
