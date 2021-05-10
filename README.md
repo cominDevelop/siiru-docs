@@ -15,7 +15,7 @@ SiiRU CMS\(시루 콘텐츠 관리 시스템\)는 Good Software\(GS\) 인증 및
 ## 바로 가기
 
 * [기능 및 특장점](siiru/features.md)
-* [설치 가이드](guide/setup.md)
+* [SiiRU CMS 설치 가이드](guide/setup.md)
 * [운영자 매뉴얼](https://siiru.comin.com/SiiRUCMS.v2.1.pdf)
 
 ## 고객 지원
