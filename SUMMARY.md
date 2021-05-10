@@ -8,7 +8,7 @@
 * [기능 및 특장점](siiru/features.md)
 * [시스템 요구사항](siiru/require.md)
 * [변경 이력](siiru/release.md)
-* [저작권](siiru/copyright.md)
+* [지원 사항](siiru/support.md)
 
 ## 사용 가이드 <a id="guide"></a>
 
