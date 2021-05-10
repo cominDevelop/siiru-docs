@@ -73,7 +73,7 @@ SiiRU CMS를 운영하기 위한 서버에 Apache가 설치되어 있고, 이를
 
 #### 2. Apache 환경설정 수정
 
-* Apache 설정 파일 httpd.conf에서 아래 내용을 수정 및 추가한다.
+* Apache 설정 파일 `httpd.conf`에서 아래 내용을 수정 및 추가한다.
 * `vi [Apache 설치 경로]/conf/httpd.conf`
 
   ```bash
