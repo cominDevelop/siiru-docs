@@ -2,7 +2,7 @@
 description: SiiRU CMS(시루 콘텐츠 관리 시스템)의 제품 설치 및 운영법에 대하여 기술한 문서입니다.
 ---
 
-# 설치 가이드
+# 설치
 
 > **작성 : \(주\)가민정보시스템 정보기술연구소 프레임웍연구팀**  
 > TEL : 062-653-2879 \| 직통 : 070-4827-4930
@@ -429,9 +429,9 @@ SiiRU CMS가 운영될 Database를 사용 중인 DB 서비스에 생성하고 Si
 * SiiRU CMS가 설치되지 않은 초기 접속인 경우 SiiRU 설치 화면이 표시되며 생성할 사이트 ID, 사이트명, 사이트 도메인 입력 후 \[SiiRU Setup\] 버튼을 클릭하여 설치를 진행한다.
 * 정상적으로 설치가 완료된 후 관리자 로그인 페이지로 이동한다.
 
-![&#xCD08;&#xAE30; &#xC124;&#xCE58; &#xD654;&#xBA74;](.gitbook/assets/siirusetup.do-1.png)
+![&#xCD08;&#xAE30; &#xC124;&#xCE58; &#xD654;&#xBA74;](../.gitbook/assets/siirusetup.do-1.png)
 
-![&#xAD00;&#xB9AC;&#xC790; &#xB85C;&#xADF8;&#xC778; &#xD654;&#xBA74;](.gitbook/assets/index.do.png)
+![&#xAD00;&#xB9AC;&#xC790; &#xB85C;&#xADF8;&#xC778; &#xD654;&#xBA74;](../.gitbook/assets/index.do.png)
 
 #### 4. 라이센스 잠금 화면
 
@@ -448,14 +448,14 @@ SiiRU CMS가 운영될 Database를 사용 중인 DB 서비스에 생성하고 Si
       SiiRU.License=[발급받은 라이센스 키]
     ```
 
-![&#xB77C;&#xC774;&#xC13C;&#xC2A4; &#xC7A0;&#xAE08; &#xD654;&#xBA74;](.gitbook/assets/siirulock.do.png)
+![&#xB77C;&#xC774;&#xC13C;&#xC2A4; &#xC7A0;&#xAE08; &#xD654;&#xBA74;](../.gitbook/assets/siirulock.do.png)
 
 #### 5. IP 잠금 화면
 
 * SiiRU CMS가 설치된 이후 허용되지 않은 IP로 접속 시 IP 잠금 화면이 표시된다.
 * SiiRU 관리자 접속이 허용된 위치에서 접속하여 `기본 설정 > IP 관리 > CMS` 페이지에서 해당 IP를 추가한다.
 
-![IP &#xC7A0;&#xAE08; &#xD654;&#xBA74;](.gitbook/assets/lock.do.png)
+![IP &#xC7A0;&#xAE08; &#xD654;&#xBA74;](../.gitbook/assets/lock.do.png)
 
 
 
