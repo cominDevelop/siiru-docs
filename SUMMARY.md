@@ -10,7 +10,7 @@
 * [변경 이력](siiru/release.md)
 * [지원 사항](siiru/support.md)
 
-## 사용 가이드 <a id="guide"></a>
+## 제품 사용 가이드 <a id="guide"></a>
 
 * [SiiRU CMS 설치](guide/setup.md)
 * [운영자 매뉴얼](https://siiru.comin.com/SiiRUCMS.v2.1.pdf)
