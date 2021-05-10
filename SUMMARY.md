@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Home](README.md)
+* [SiiRU CMS v2.1](README.md)
 
 ## 제품 정보 <a id="siiru"></a>
 
