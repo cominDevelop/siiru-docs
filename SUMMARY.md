@@ -1,4 +1,4 @@
 # Table of contents
 
-* [Initial page](README.md)
+* [SiiRU CMS v2.1](README.md)
 
