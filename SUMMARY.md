@@ -23,9 +23,7 @@
 * [프로그램](develop/appplication.md)
 * [사용 예제](develop/samples.md)
 
-## ㅤ
-
----
+## 문의 <a id="comin"></a>
 
 * [\(주\)가민정보시스템](http://www.comin.com)
 
