@@ -14,8 +14,6 @@ description: SiiRU CMS 설치 환경 안내 및 설치 가이드입니다.
 * WEB : Apache 2.2.x 이상
 * WAS : Apache Tomcat 8.x, Tmax Jeus 7
 
-
-
 ## 설치 방법
 
 ### 설치 파일 업로드
