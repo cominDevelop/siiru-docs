@@ -10,7 +10,7 @@
 * [변경 이력](siiru/release.md)
 * [지원 사항](siiru/support.md)
 
-## 사용 가이드 <a id="guide"></a>
+## 제품 사용 가이드 <a id="guide"></a>
 
 * [SiiRU CMS 설치](guide/setup.md)
 * [운영자 매뉴얼](https://siiru.comin.com/SiiRUCMS.v2.1.pdf)
@@ -23,9 +23,7 @@
 * [프로그램](develop/appplication.md)
 * [사용 예제](develop/samples.md)
 
-## ㅤ
-
----
+## 문의 <a id="comin"></a>
 
 * [\(주\)가민정보시스템](http://www.comin.com)
 
