@@ -4,20 +4,20 @@ description: SiiRU CMS 설치 환경 안내 및 설치 가이드입니다.
 
 # SiiRU CMS 설치
 
-## 설치 환경
+### 설치 환경
 
 본 시스템은 아래와 같은 환경에서 설치 및 운영 테스트함.
 
 |  | Version |
-| :---: |  :--- |
+| :---: | :--- |
 | **OS** | CentOS 6.x 이상 |
 | **DB** | MariaDB 10.2.x / MySQL 8.0.x / Oracle 11G / Tibero 5.x, 6.x |
 | **WEB** | Apache 2.2.x |
 | **WAS** | JDK 1.8.x 이상 / Apache Tomcat 8.x, Tmax Jeus 7 |
 
-## 설치 방법
+### 설치 방법
 
-### 설치 파일 업로드
+#### 설치 파일 업로드
 
 SiiRU CMS의 소스 파일을 서버에 업로드 및 압축 해제한다.
 
@@ -33,11 +33,11 @@ SiiRU CMS의 소스 파일을 서버에 업로드 및 압축 해제한다.
    tar zxvf SiiRU_v2.1.tar.gz /home/[계정명]/public_html
    ```
 
-### Apache 설정
+#### Apache 설정
 
 SiiRU CMS를 운영하기 위한 서버에 Apache가 설치되어 있고, 이를 사용하는 경우 아래와 같이 설정한다.
 
-#### 1. Tomcat Connector 설치
+**1. Tomcat Connector 설치**
 
 1. Tomcat Connectors JK 최신 버전을 [다운로드](https://tomcat.apache.org/download-connectors.cgi) 한다.
 2. 컴파일 설치를 위한 기본 모듈을 확인한다.
@@ -77,44 +77,50 @@ SiiRU CMS를 운영하기 위한 서버에 Apache가 설치되어 있고, 이를
     find / -name 'mod_jk.so'
    ```
 
-#### 2. Apache 환경설정 수정
+**2. Apache 환경설정 수정**
 
 * Apache 설정 파일 `httpd.conf`에서 아래 내용을 수정 및 추가한다.
-    ```
+
+  ```text
     vi [Apache 설치 경로]/conf/httpd.conf
-    ```
-    - 추가할 내용
-  ```bash
+  ```
+
+  * 추가할 내용
+
+    ```bash
     ServerTokens prod
     ServerSignature Off
 
     Timeout 300
 
     <Directory />
-        Require all granted
+      Require all granted
     </Directory>
 
     LoadModule jk_module modules/mod_jk.so
 
     <IfModule jk_module>
-      JkWorkersFile "conf/workers.properties"
-      JkLogFile "logs/mod_jk.log"
-      JkLogLevel info
-      JkShmFile run/mod_jk.shm
-      #JkMountFile conf/uriworkermap.properties
-      JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
-        JkRequestLogFormat "%w %V %T"
+    JkWorkersFile "conf/workers.properties"
+    JkLogFile "logs/mod_jk.log"
+    JkLogLevel info
+    JkShmFile run/mod_jk.shm
+    #JkMountFile conf/uriworkermap.properties
+    JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
+      JkRequestLogFormat "%w %V %T"
     </IfModule>
-  ```
+    ```
 
-#### 3. Tomcat 연동 및 가상 호스트 추가
+**3. Tomcat 연동 및 가상 호스트 추가**
 
 1. Apache 환경 설정 폴더 아래에 workers.properties를 생성 및 아래 내용을 추가한다.
-    ```
+
+   ```text
     vi [Apache 설치 경로]/conf/workeres.properties
    ```
-    - 추가할 내용
-   ```bash
+
+   * 추가할 내용
+
+     ```bash
      ################################################
      #Definition for Ajp13 worker
      ################################################
@@ -124,16 +130,19 @@ SiiRU CMS를 운영하기 위한 서버에 Apache가 설치되어 있고, 이를
      worker.서비스명.host=localhost # 톰캣_서비스_호스트주소
      worker.서비스명.type=ajp13
      worker.서비스명.lbfactor=1
-   ```
+     ```
 
-3. Apache 가상 호스트 설정 파일 `httpd-vhosts.conf`에서 아래 내용을 추가한다.
-   ```
+2. Apache 가상 호스트 설정 파일 `httpd-vhosts.conf`에서 아래 내용을 추가한다.
+
+   ```text
    vi [Apache 설치 경로]/conf.d/httpd-vhosts.conf
    또는
    vi [Apache 설치 경로]/conf/extra/httpd-vhosts.conf
    ```
-   - 추가할 내용
-   ```bash
+
+   * 추가할 내용
+
+     ```bash
      <VirtualHost *:80>
          ServerAdmin webmaster@test.com
          ServerName test.com
@@ -149,67 +158,72 @@ SiiRU CMS를 운영하기 위한 서버에 Apache가 설치되어 있고, 이를
          JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
          JkMount /* 서비스명  # workers.properties에서 지정해준 list명
      </VirtualHost>
-   ```
+     ```
 
-5. Apache 서비스를 테스트 및 재기동한다.
+3. Apache 서비스를 테스트 및 재기동한다.
 
-   ```
+   ```text
    # 테스트
    [Apache 설치 경로]/bin/apachectl configtest
    또는
    httpd -t
         Syntax OK
-   
+
    # 재기동
    [Apache 설치 경로]/bin/apachectl restart
    ```
 
-### Tomcat 설정
+#### Tomcat 설정
 
 SiiRU CMS를 운영하기 위한 WAS 서버에 Apache Tomcat을 사용하는 경우 아래와 같이 설정한다.
 
-#### 1. JDK 설치 확인
+**1. JDK 설치 확인**
 
 * SiiRU CMS v2.1은 OpenJDK/OracleJDK 1.8.0 이상을 사용 권장한다.
 * 설치된 JDK의 위치 확인 : `which java`
 * 설치된 JDK의 버전 확인 : `java -version`
 
-#### 2. Tomcat 설치
+**2. Tomcat 설치**
 
 * SiiRU CMS v2.1은 JDK 1.8.0 이상이 설치된 환경에서 Apache Tomcat 8.5.51 이상을 사용 권장한다.
 * Tomcat 버전 확인 : `sh [Tomcat 설치 경로]/bin/version.sh`
-* Apache Tomcat 8.5.51 이상 버전을 [다운로드](https://archive.apache.org/dist/tomcat/tomcat-8/) 한다. 
-  - 버전 선택 → bin 폴더 → apache-tomcat-8.5.x.tar.gz 파일 다운로드
-
+* Apache Tomcat 8.5.51 이상 버전을 [다운로드](https://archive.apache.org/dist/tomcat/tomcat-8/) 한다.
+  * 버전 선택 → bin 폴더 → apache-tomcat-8.5.x.tar.gz 파일 다운로드
 * 다운로드 받은 파일을 서버에 업로드하고 특정 경로에 해당 파일의 압축을 해제한다.
-  ```
+
+  ```text
   tar zxvf apache-tomcat-8.5.x.tar.gz [압축 해제할 경로]
   ```
 
 * 해당 디렉토리로 이동하여 서비스 기동을 확인한다.
 
-  ```
+  ```text
   cd [압축 해제된 경로]/bin
   sh ./startup.sh
   ```
 
 * 프로세스 확인
-    ```
-    ps -ef | grep java | grep [Tomcat 설치 경로]
-    ```
-* 서비스 포트 확인 
-    ```
-    netstat -an | grep "LISTEN " | grep 8080
-    ```
 
-#### 3. 환경 설정
+  ```text
+    ps -ef | grep java | grep [Tomcat 설치 경로]
+  ```
+
+* 서비스 포트 확인 
+
+  ```text
+    netstat -an | grep "LISTEN " | grep 8080
+  ```
+
+**3. 환경 설정**
 
 * Tomcat이 설치된 디렉토리 하위의 각 파일을 열어 아래 내용을 서버 환경에 맞게 추가 및 수정한다.
-- `conf/server.xml`에 추가할 내용
-    * 서비스 할 사이트 환경에 맞추어 Service와 Connector의 내용을 수정한다.
-    * 서브디렉토리 방식의 도메인을 사용할 경우 Context의 path를 수정한다.
+* `conf/server.xml`에 추가할 내용
+
+  * 서비스 할 사이트 환경에 맞추어 Service와 Connector의 내용을 수정한다.
+  * 서브디렉토리 방식의 도메인을 사용할 경우 Context의 path를 수정한다.
+
     \(예\) `www.domain.com/test` 인 경우 `path="/test"`
-  
+
   ```bash
   <Service name="Catalina">
      <Connector port="8080" protocol="AJP/1.3" address="0.0.0.0" redirectPort="8443" URIEncoding="UTF-8" maxThreads="250" maxHttpHeaderSize="8192" emptySessionPath="true" enableLookups="false" acceptCount="100" disableUploadTimeout="true" maxPostSize="-1" maxParameterCount="-1" maxSwallowSize="-1" connectionTimeout="20000" secretRequired="false" server="server" />
@@ -224,8 +238,10 @@ SiiRU CMS를 운영하기 위한 WAS 서버에 Apache Tomcat을 사용하는 경
         </Host>
       </Engine>
    </Service>
-   ```
+  ```
+
 * `conf/web.xml`에 추가할 내용
+
   * http로 접근할 경우 의 항목을 false, https로 접근할 경우 true로 설정해주어야 한다.
 
   ```bash
@@ -237,6 +253,7 @@ SiiRU CMS를 운영하기 위한 WAS 서버에 Apache Tomcat을 사용하는 경
       </cookie-config>
   </session-config>
   ```
+
 * `bin/catalina.sh`에 추가할 내용
 
   ```bash
@@ -247,44 +264,59 @@ SiiRU CMS를 운영하기 위한 WAS 서버에 Apache Tomcat을 사용하는 경
   * JVM 메모리 설정
     1. `catalina.sh` 상단에 위와 같은 JAVA\_OPTS 구문을 추가하여 JVM 메모리를 설정할 수 있다.
     2. JVM 메모리 관련 옵션 정보는 아래와 같다.
-        * -Xms : Java Heap 영역의 최소 Size
-        * -Xmx : Java Heap 영역의 Size
-        * -XX:NewSize : New Generation의 최소 Size
-        * -XX:MaxNewSize : New Generation의 최대 Size
-        * -XX:PermSize : Permananet 영역의 최소 Size
-        * -XX:MaxPermSize : Permananet 영역의 최대 Size
-        * 각 최소/최대 사이즈는 부하가 늘어날 때 메모리를 증가시키는 작업 자체가 새로운 부하가 될 수 있으므로, 최소/최대 사이즈를 동일하게 설정하여 메모리를 확보한 상태에서 JVM을 가동시키는 것이 좋다. 
+       * -Xms : Java Heap 영역의 최소 Size
+       * -Xmx : Java Heap 영역의 Size
+       * -XX:NewSize : New Generation의 최소 Size
+       * -XX:MaxNewSize : New Generation의 최대 Size
+       * -XX:PermSize : Permananet 영역의 최소 Size
+       * -XX:MaxPermSize : Permananet 영역의 최대 Size
+       * 각 최소/최대 사이즈는 부하가 늘어날 때 메모리를 증가시키는 작업 자체가 새로운 부하가 될 수 있으므로, 최소/최대 사이즈를 동일하게 설정하여 메모리를 확보한 상태에서 JVM을 가동시키는 것이 좋다. 
     3. 서버에 필요한 메모리 계산 방법은 다음과 같다. 
-        ```
-        \(MaxProcessMemory - JVMMemory - ReservedOsMemory\) / \(ThreadStackSize\) = Number of threads
-        ```
-  * 일자별 로그 설정  \(catalina.sh의 450~480 Line\)
-    - 기존 `catalina.sh`
-    ```bash
-    touch "$CATALINA_OUT"
-    ...
-    >> "$CATALINA_OUT" 2>&1 "&"
-    ```
-    - 수정할 부분
-    ```bash
-    # catalina.out 생성을 주석 처리
-    # touch "$CATALINA_OUT"   
-    ...
-    
-    # Apache 가 설치되어 있지 않은 경우
-    >> "$CATALINA_OUT".$(date '+%Y-%m-%d') 2>&1 "&"
-    # Apache 가 설치되어 있는 경우
-    2>&1 "&" | [Apache 설치 경로]/bin/rotatelogs "$CATALINA_OUT"-%Y-%m-%d 86400 540 &
-    ```
-    * 설정 완료 시
-    `[Tomcat 설치 경로]/logs` 폴더에서 `catalina.out-2020-00-00.log` 형식의 로그 파일이 생성 되는 것을 확인할 수 있다.
 
-* `bin/startup.sh`에 추가할 내용 
-    - SiiRU CMS가 운영될 Tomcat의 환경변수를 설정한다.
-      * JAVA\_HOME : `which java` 로 확인 \(java의 전체 경로에서 /bin/java 앞까지의 경로\)
-      * CLASSPATH : 기존 CLASSPATH에 `$JAVA_HOME/lib` 을 추가한다.
-      * CATALINA\_HOME : 현재 Tomcat이 설치된 경로
-      * PATH : 기존 PATH에 `$JAVA_HOME/bin` 과 `$CATALINA_HOME/bin` 을 추가한다.
+       ```text
+        \(MaxProcessMemory - JVMMemory - ReservedOsMemory\) / \(ThreadStackSize\) = Number of threads
+       ```
+  * 일자별 로그 설정 \(catalina.sh의 450~480 Line\)
+
+    * 기존 `catalina.sh`
+
+      ```bash
+      touch "$CATALINA_OUT"
+      ...
+      >> "$CATALINA_OUT" 2>&1 "&"
+      ```
+
+    * 수정할 부분
+
+      \`\`\`bash
+
+      **catalina.out 생성을 주석 처리**
+
+      **touch "$CATALINA\_OUT"**
+
+      ...
+
+    **Apache 가 설치되어 있지 않은 경우**
+
+    > > "$CATALINA\_OUT".$\(date '+%Y-%m-%d'\) 2&gt;&1 "&"
+    > >
+    > > ## Apache 가 설치되어 있는 경우
+    > >
+    > > 2&gt;&1 "&" \| \[Apache 설치 경로\]/bin/rotatelogs "$CATALINA\_OUT"-%Y-%m-%d 86400 540 &
+    > >
+    > > \`\`\`
+    > >
+    > > * 설정 완료 시
+    > >
+    > >   `[Tomcat 설치 경로]/logs` 폴더에서 `catalina.out-2020-00-00.log` 형식의 로그 파일이 생성 되는 것을 확인할 수 있다.
+
+* `bin/startup.sh`에 추가할 내용
+  * SiiRU CMS가 운영될 Tomcat의 환경변수를 설정한다.
+
+    * JAVA\_HOME : `which java` 로 확인 \(java의 전체 경로에서 /bin/java 앞까지의 경로\)
+    * CLASSPATH : 기존 CLASSPATH에 `$JAVA_HOME/lib` 을 추가한다.
+    * CATALINA\_HOME : 현재 Tomcat이 설치된 경로
+    * PATH : 기존 PATH에 `$JAVA_HOME/bin` 과 `$CATALINA_HOME/bin` 을 추가한다.
 
     ```bash
     JAVA_HOME=/usr/lib/jvm/jre-1.8.0-openjdk
@@ -295,16 +327,16 @@ SiiRU CMS를 운영하기 위한 WAS 서버에 Apache Tomcat을 사용하는 경
     ```
 * 환경 설정 완료 후 서비스를 재기동한다.
 
-  ```
+  ```text
   sh [Tomcat 설치 경로]/bin/shutdown.sh
   sh [Tomcat 설치 경로]/bin/startup.sh
   ```
 
-### Database 설정
+#### Database 설정
 
 SiiRU CMS가 운영될 Database를 사용 중인 DB 서비스에 생성하고 SiiRU와 연동하여 설치를 진행한다.
 
-#### 1. 서비스별 Database 및 사용자 추가
+**1. 서비스별 Database 및 사용자 추가**
 
 * MariaDB / MySQL 1. 관리자 계정으로 접속한다 : `mysql -uroot -p` 2. 기존 데이터베이스 및 사용자를 확인한다.
 
@@ -433,7 +465,7 @@ SiiRU CMS가 운영될 Database를 사용 중인 DB 서비스에 생성하고 Si
       SELECT * FROM DBA_SYS_PRIVS WHERE GRANTEE='[Role명]';
      ```
 
-#### 2. SiiRU 연동
+**2. SiiRU 연동**
 
 * SiiRU CMS 소스의 환경설정 파일에서 연동할 Database 정보를 입력한다.
 * `[SiiRU CMS 소스 위치]/WEB-INF/classes/props/config.properties`에서 수정할 내용
@@ -460,32 +492,37 @@ SiiRU CMS가 운영될 Database를 사용 중인 DB 서비스에 생성하고 Si
     Database.Password=siiru1234
   ```
 
-### 서비스 기동
+#### 서비스 기동
 
 설치 파일 업로드 / WEB 설정 / WAS 설정 / DB 연동이 정상적으로 완료된 후 서비스를 기동한다.
 
-#### 1. Tomcat 서비스 기동
+**1. Tomcat 서비스 기동**
 
 * 서비스 시작
+
   ```bash
   sh [Tomcat 설치 경로]/bin/startup.sh
   ```
+
 * 서비스 중지
+
   ```bash
   sh [Tomcat 설치 경로]/bin/shutdown.sh
   ```
+
 * 로그 확인 :
+
   ```bash
   tail -f [Tomcat 설치 경로]/logs/catalin.out-해당 날짜.log
   ```
 
-#### 2. SiiRU 관리자 페이지 접속
+**2. SiiRU 관리자 페이지 접속**
 
 * Tomcat 서비스가 정상적으로 시작되면 웹 브라우저에서 관리자 화면으로 접속한다.
 
   **URL 접속 주소 : `http://[호스트 주소]/siiru`**
 
-#### 3. 초기 설치 및 로그인 화면
+**3. 초기 설치 및 로그인 화면**
 
 * SiiRU CMS가 설치되지 않은 초기 접속인 경우 SiiRU 설치 화면이 표시되며 생성할 사이트 ID, 사이트명, 사이트 도메인 입력 후 \[SiiRU Setup\] 버튼을 클릭하여 설치를 진행한다.
 * 정상적으로 설치가 완료된 후 관리자 로그인 페이지로 이동한다.
@@ -494,7 +531,7 @@ SiiRU CMS가 운영될 Database를 사용 중인 DB 서비스에 생성하고 Si
 
 ![&#xAD00;&#xB9AC;&#xC790; &#xB85C;&#xADF8;&#xC778; &#xD654;&#xBA74;](../.gitbook/assets/index.do.png)
 
-#### 4. 라이센스 잠금 화면
+**4. 라이센스 잠금 화면**
 
 * SiiRU 라이센스가 인증되지 않은 경우 라이센스 잠금 화면이 표시된다.
 * **\(주\)가민정보시스템 프레임웍연구팀 \(TEL : 062-653-2879 \| 직통 : 070-4827-4930\)에 문의하여 라이센스를 발급받을 수 있다.**
@@ -511,7 +548,7 @@ SiiRU CMS가 운영될 Database를 사용 중인 DB 서비스에 생성하고 Si
 
 ![&#xB77C;&#xC774;&#xC13C;&#xC2A4; &#xC7A0;&#xAE08; &#xD654;&#xBA74;](../.gitbook/assets/siirulock.do.png)
 
-#### 5. IP 잠금 화면
+**5. IP 잠금 화면**
 
 * SiiRU CMS가 설치된 이후 허용되지 않은 IP로 접속 시 IP 잠금 화면이 표시된다.
 * SiiRU 관리자 접속이 허용된 위치에서 접속하여 `기본 설정 > IP 관리 > CMS` 페이지에서 해당 IP를 추가한다.
@@ -521,7 +558,7 @@ SiiRU CMS가 운영될 Database를 사용 중인 DB 서비스에 생성하고 Si
 > **작성 : \(주\)가민정보시스템 정보기술연구소 프레임웍연구팀**  
 > TEL : 062-653-2879 \(직통 : 070-4827-4930\)
 
-#### 📁 Revision History
+**📁 Revision History**
 
 | **개정일자** | 내용 | 작성자 | 승인/검토자 |
 | :--- | :--- | :--- | :--- |
